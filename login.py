@@ -10,8 +10,8 @@ from logger import setup_custom_log
 logger, _ = setup_custom_log("", "connect")
 
 parser = argparse.ArgumentParser(description="Net Login")
-parser.add_argument("--user", type=str, default="2018170896")
-parser.add_argument("--password", type=str, default="011319")
+parser.add_argument("--user", type=str)
+parser.add_argument("--password", type=str)
 parser.add_argument("--keep_alive", action="store_true", default=False)
 args = parser.parse_args()
 
