@@ -1,14 +1,21 @@
+import argparse
+import msvcrt
 import os
+import platform
+import sys
 import time
 
 import requests
-import platform
-import msvcrt
-import sys
 
 from logger import setup_custom_log
 
 logger, _ = setup_custom_log("", "connect")
+
+parser = argparse.ArgumentParser(description="login")
+parser.add_argument("--username", type=str, default="")
+parser.add_argument("--keep_alive", action="store_true", default=False)
+parser.add_argument("--password", type=str, default="")
+args = parser.parse_args()
 
 
 def param_init(username, password):
@@ -102,16 +109,25 @@ def login_request(username, password, keep_alive):
 
 
 def main():
-    username = input("Enter the user name: ")
-    password = pwd_input("Enter the pass word: ")
-    keep_alive = input("Keep alive ? ('y' or 'n'): ")
-    while keep_alive != 'y' and keep_alive != 'n':
-        print("please enter 'y' or 'n':")
-        keep_alive = input()
-    if keep_alive == 'y':
-        keep_alive = True
+    if args.username != '':
+        username = args.username
     else:
-        keep_alive = False
+        username = input("Enter the user name: ")
+    if args.password != '':
+        password = args.password
+    else:
+        password = pwd_input("Enter the pass word: ")
+    if args.username == '' or args.password == '':
+        keep_alive = input("Keep alive ? ('y' or 'n'): ")
+        while keep_alive != 'y' and keep_alive != 'n':
+            print("please enter 'y' or 'n':")
+            keep_alive = input()
+        if keep_alive == 'y':
+            keep_alive = True
+        else:
+            keep_alive = False
+    else:
+        keep_alive = args.keep_alive
 
     login_request(username, password, keep_alive)
 
